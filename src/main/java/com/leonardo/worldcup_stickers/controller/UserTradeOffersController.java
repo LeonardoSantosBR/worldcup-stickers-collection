@@ -49,7 +49,7 @@ public class UserTradeOffersController {
     }
 
     @PostMapping("/{offerId}/accept")
-    public TradeOfferDto acceptOffer(
+    public boolean acceptOffer(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
             @PathVariable Long offerId,
             @Valid @RequestBody(required = false) RespondOfferDto body) {
@@ -57,7 +57,7 @@ public class UserTradeOffersController {
     }
 
     @PostMapping("/{offerId}/reject")
-    public TradeOfferDto rejectOffer(
+    public boolean rejectOffer(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
             @PathVariable Long offerId,
             @Valid @RequestBody(required = false) RespondOfferDto body) {

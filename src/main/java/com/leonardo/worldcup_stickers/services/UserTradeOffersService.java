@@ -159,7 +159,7 @@ public class UserTradeOffersService {
     }
 
     @Transactional
-    public TradeOfferDto acceptOffer(Long receiverId, Long offerId, String note) {
+    public boolean acceptOffer(Long receiverId, Long offerId, String note) {
         UserTradeOffersEntity offer = loadPendingOfferForReceiver(receiverId, offerId);
 
         UserEntity proposer = offer.getProposer();
@@ -182,11 +182,11 @@ public class UserTradeOffersService {
 
         invalidateConflictingOffers(saved, receiver);
 
-        return TradeOfferDto.fromEntity(saved);
+        return true;
     }
 
     @Transactional
-    public TradeOfferDto rejectOffer(Long receiverId, Long offerId, String note) {
+    public boolean rejectOffer(Long receiverId, Long offerId, String note) {
         UserTradeOffersEntity offer = loadPendingOfferForReceiver(receiverId, offerId);
 
         offer.setStatus(TradeStatusEnum.REJECTED);
@@ -194,7 +194,7 @@ public class UserTradeOffersService {
         UserTradeOffersEntity saved = userTradeOffersRepository.save(offer);
         log(saved, TradeStatusEnum.REJECTED, offer.getReceiver(), note);
 
-        return TradeOfferDto.fromEntity(saved);
+        return true;
     }
 
     private UserTradeOffersEntity loadPendingOfferForReceiver(Long receiverId, Long offerId) {
