@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.leonardo.worldcup_stickers.dto.MakeOfferDto;
 import com.leonardo.worldcup_stickers.dto.PageResponseDto;
+import com.leonardo.worldcup_stickers.dto.StickerSummaryDto;
 import com.leonardo.worldcup_stickers.dto.TradeOfferDetailDto;
 import com.leonardo.worldcup_stickers.dto.TradeOfferDto;
 import com.leonardo.worldcup_stickers.entities.StickerEntity;
@@ -68,7 +69,8 @@ public class UserTradeOffersService {
     }
 
     @Transactional(readOnly = true)
-    public PageResponseDto<TradeOfferDetailDto> findReceivedOffers(Long receiverId, int page, int limit, TradeStatusEnum status) {
+    public PageResponseDto<TradeOfferDetailDto> findReceivedOffers(Long receiverId, int page, int limit,
+            TradeStatusEnum status) {
         Pageable pageable = PageRequest.of(
                 Math.max(page - 1, 0),
                 Math.min(Math.max(limit, 1), MAX_LIMIT),
@@ -78,11 +80,11 @@ public class UserTradeOffersService {
                 ? userTradeOffersRepository.findByReceiverId(receiverId, pageable)
                 : userTradeOffersRepository.findByReceiverIdAndStatus(receiverId, status, pageable);
 
-        Map<Long, String> stickerNames = loadStickerNames(result.getContent());
-        return PageResponseDto.from(result, offer -> TradeOfferDetailDto.fromEntity(offer, stickerNames));
+        Map<Long, StickerSummaryDto> stickers = loadStickerSummaries(result.getContent());
+        return PageResponseDto.from(result, offer -> TradeOfferDetailDto.fromEntity(offer, stickers));
     }
 
-    private Map<Long, String> loadStickerNames(List<UserTradeOffersEntity> offers) {
+    private Map<Long, StickerSummaryDto> loadStickerSummaries(List<UserTradeOffersEntity> offers) {
         Set<Long> stickerIds = offers.stream()
                 .flatMap(offer -> Stream.concat(
                         offer.getRequestedStickerIds().stream(),
@@ -94,7 +96,12 @@ public class UserTradeOffersService {
         }
 
         return stickersRepository.findAllById(stickerIds).stream()
-                .collect(Collectors.toMap(StickerEntity::getId, StickerEntity::getPlayerName));
+                .collect(Collectors.toMap(
+                        StickerEntity::getId,
+                        sticker -> new StickerSummaryDto(
+                                sticker.getId(),
+                                sticker.getPlayerName(),
+                                sticker.getRarity().name())));
     }
 
     @Transactional
@@ -150,7 +157,7 @@ public class UserTradeOffersService {
 
         return TradeOfferDto.fromEntity(saved);
     }
-    
+
     @Transactional
     public TradeOfferDto acceptOffer(Long receiverId, Long offerId, String note) {
         UserTradeOffersEntity offer = loadPendingOfferForReceiver(receiverId, offerId);
@@ -251,7 +258,6 @@ public class UserTradeOffersService {
         });
     }
 
-
     private void invalidateConflictingOffers(UserTradeOffersEntity accepted, UserEntity actor) {
         Set<Long> tradedUserIds = Set.of(accepted.getProposer().getId(), accepted.getReceiver().getId());
 
@@ -260,8 +266,8 @@ public class UserTradeOffersService {
             ownedByUser.put(userId, new HashSet<>(userStickersRepository.findStickerIdsByUserId(userId)));
         }
 
-        List<UserTradeOffersEntity> pending =
-                userTradeOffersRepository.findByStatusAndUsersInvolved(TradeStatusEnum.PENDING, tradedUserIds);
+        List<UserTradeOffersEntity> pending = userTradeOffersRepository
+                .findByStatusAndUsersInvolved(TradeStatusEnum.PENDING, tradedUserIds);
 
         for (UserTradeOffersEntity other : pending) {
             if (other.getId().equals(accepted.getId())) {
@@ -271,8 +277,7 @@ public class UserTradeOffersService {
             Set<Long> proposerOwns = ownedByUser.get(other.getProposer().getId());
             Set<Long> receiverOwns = ownedByUser.get(other.getReceiver().getId());
 
-            boolean broken =
-                    (proposerOwns != null && !proposerOwns.containsAll(other.getOfferedStickerIds()))
+            boolean broken = (proposerOwns != null && !proposerOwns.containsAll(other.getOfferedStickerIds()))
                     || (receiverOwns != null && !receiverOwns.containsAll(other.getRequestedStickerIds()));
 
             if (broken) {

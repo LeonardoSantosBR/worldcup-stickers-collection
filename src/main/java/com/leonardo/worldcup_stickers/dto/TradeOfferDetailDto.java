@@ -19,23 +19,23 @@ public record TradeOfferDetailDto(
     LocalDateTime createdAt,
     LocalDateTime respondedAt) {
 
-    public static TradeOfferDetailDto fromEntity(UserTradeOffersEntity entity, Map<Long, String> stickerNames) {
+    public static TradeOfferDetailDto fromEntity(UserTradeOffersEntity entity, Map<Long, StickerSummaryDto> stickers) {
         return new TradeOfferDetailDto(
                 entity.getId(),
                 entity.getProposer().getId(),
                 entity.getProposer().getName(),
                 entity.getReceiver().getId(),
-                toSummaries(entity.getRequestedStickerIds(), stickerNames),
-                toSummaries(entity.getOfferedStickerIds(), stickerNames),
+                toSummaries(entity.getRequestedStickerIds(), stickers),
+                toSummaries(entity.getOfferedStickerIds(), stickers),
                 entity.getStatus(),
                 entity.getMessage(),
                 entity.getCreatedAt(),
                 entity.getRespondedAt());
     }
 
-    private static List<StickerSummaryDto> toSummaries(List<Long> stickerIds, Map<Long, String> stickerNames) {
+    private static List<StickerSummaryDto> toSummaries(List<Long> stickerIds, Map<Long, StickerSummaryDto> stickers) {
         return stickerIds.stream()
-                .map(id -> new StickerSummaryDto(id, stickerNames.get(id)))
+                .map(stickers::get)
                 .toList();
     }
 }
