@@ -23,7 +23,7 @@ import com.leonardo.worldcup_stickers.services.UserTradeOffersService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/trade-offers")
+@RequestMapping("/user-trade-offers")
 public class UserTradeOffersController {
     private final UserTradeOffersService userTradeOffersService;
 
@@ -38,6 +38,15 @@ public class UserTradeOffersController {
             @RequestParam(defaultValue = "20") int limit,
             @RequestParam(required = false) TradeStatusEnum status) {
         return userTradeOffersService.findReceivedOffers(userId, page, limit, status);
+    }
+
+    @GetMapping("/outbox")
+    public PageResponseDto<TradeOfferDetailDto> outbox(
+            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "20") int limit,
+            @RequestParam(required = false) TradeStatusEnum status) {
+        return userTradeOffersService.findSentOffers(userId, page, limit, status);
     }
 
     @PostMapping("/make-offer")

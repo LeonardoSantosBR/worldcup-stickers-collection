@@ -10,7 +10,7 @@ Nada aqui é um pedido de implementação. É um mapa.
 
 ## Bloqueantes de produto
 
-### OQ-01 — Falta o outbox _(inbox resolvido)_
+### OQ-01 — Falta o outbox _(resolvido)_
 ✅ `GET /trade-offers/inbox` implementado (`TO-28`…`TO-36`) — o receiver já descobre as
 ofertas que recebeu, com nome do proposer e das figurinhas.
 

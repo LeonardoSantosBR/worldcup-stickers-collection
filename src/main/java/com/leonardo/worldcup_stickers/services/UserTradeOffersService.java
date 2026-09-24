@@ -84,24 +84,20 @@ public class UserTradeOffersService {
         return PageResponseDto.from(result, offer -> TradeOfferDetailDto.fromEntity(offer, stickers));
     }
 
-    private Map<Long, StickerSummaryDto> loadStickerSummaries(List<UserTradeOffersEntity> offers) {
-        Set<Long> stickerIds = offers.stream()
-                .flatMap(offer -> Stream.concat(
-                        offer.getRequestedStickerIds().stream(),
-                        offer.getOfferedStickerIds().stream()))
-                .collect(Collectors.toSet());
+    @Transactional(readOnly = true)
+    public PageResponseDto<TradeOfferDetailDto> findSentOffers(Long proposerId, int page, int limit,
+            TradeStatusEnum status) {
+        Pageable pageable = PageRequest.of(
+                Math.max(page - 1, 0),
+                Math.min(Math.max(limit, 1), MAX_LIMIT),
+                Sort.by("createdAt").descending());
 
-        if (stickerIds.isEmpty()) {
-            return Map.of();
-        }
+        Page<UserTradeOffersEntity> result = status == null
+                ? userTradeOffersRepository.findByProposerId(proposerId, pageable)
+                : userTradeOffersRepository.findByProposerIdAndStatus(proposerId, status, pageable);
 
-        return stickersRepository.findAllById(stickerIds).stream()
-                .collect(Collectors.toMap(
-                        StickerEntity::getId,
-                        sticker -> new StickerSummaryDto(
-                                sticker.getId(),
-                                sticker.getPlayerName(),
-                                sticker.getRarity().name())));
+        Map<Long, StickerSummaryDto> stickers = loadStickerSummaries(result.getContent());
+        return PageResponseDto.from(result, offer -> TradeOfferDetailDto.fromEntity(offer, stickers));
     }
 
     @Transactional
@@ -195,6 +191,26 @@ public class UserTradeOffersService {
         log(saved, TradeStatusEnum.REJECTED, offer.getReceiver(), note);
 
         return true;
+    }
+
+    private Map<Long, StickerSummaryDto> loadStickerSummaries(List<UserTradeOffersEntity> offers) {
+        Set<Long> stickerIds = offers.stream()
+                .flatMap(offer -> Stream.concat(
+                        offer.getRequestedStickerIds().stream(),
+                        offer.getOfferedStickerIds().stream()))
+                .collect(Collectors.toSet());
+
+        if (stickerIds.isEmpty()) {
+            return Map.of();
+        }
+
+        return stickersRepository.findAllById(stickerIds).stream()
+                .collect(Collectors.toMap(
+                        StickerEntity::getId,
+                        sticker -> new StickerSummaryDto(
+                                sticker.getId(),
+                                sticker.getPlayerName(),
+                                sticker.getRarity().name())));
     }
 
     private UserTradeOffersEntity loadPendingOfferForReceiver(Long receiverId, Long offerId) {
