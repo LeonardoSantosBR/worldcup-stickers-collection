@@ -18,13 +18,13 @@ ofertas que recebeu, com nome do proposer e das figurinhas.
 `findByProposerIdAndStatus` continua pronto e sem uso.
 → `GET /user-trade-offers/outbox`, espelhando o inbox.
 
-### OQ-02 — `CANCELLED` é um estado órfão
+### OQ-02 — `CANCELLED` é um estado órfão _(resolvido)_
 ✅ Está no `TradeStatusEnum` e no javadoc de `UserTradeOffersLogsEntity` ("CANCELLED quando o
 proposer desiste"), mas nenhuma transição o produz. `findByIdAndProposerId` existe e não é
 usado. Ver `TO-02`.
 → `POST /user-trade-offers/{id}/cancel`, restrito ao proposer, só sobre `PENDING`.
 
-### OQ-03 — Não é possível esvaziar a vitrine
+### OQ-03 — Não é possível esvaziar a vitrine _(resolvido)_
 ✅ `MakeAvailableTradeDto.stickerIds` é `@NotEmpty` e a operação substitui a lista inteira
 (`TI-03`). Não existe caminho para "não quero trocar mais nada".
 → Permitir lista vazia, ou criar endpoint de remoção.
