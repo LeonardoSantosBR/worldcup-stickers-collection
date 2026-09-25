@@ -11,21 +11,21 @@ Nada aqui é um pedido de implementação. É um mapa.
 ## Bloqueantes de produto
 
 ### OQ-01 — Falta o outbox _(resolvido)_
-✅ `GET /trade-offers/inbox` implementado (`TO-28`…`TO-36`) — o receiver já descobre as
+✅ `GET /user-trader-offers/inbox` implementado (`TO-28`…`TO-36`) — o receiver já descobre as
 ofertas que recebeu, com nome do proposer e das figurinhas.
 
-❌ Falta o lado do proposer: não há como ver as ofertas **enviadas**.
+✅ Falta o lado do proposer: não há como ver as ofertas **enviadas**.
 `findByProposerIdAndStatus` continua pronto e sem uso.
-→ `GET /trade-offers/outbox`, espelhando o inbox.
+→ `GET /user-trade-offers/outbox`, espelhando o inbox.
 
 ### OQ-02 — `CANCELLED` é um estado órfão
-Está no `TradeStatusEnum` e no javadoc de `UserTradeOffersLogsEntity` ("CANCELLED quando o
+✅ Está no `TradeStatusEnum` e no javadoc de `UserTradeOffersLogsEntity` ("CANCELLED quando o
 proposer desiste"), mas nenhuma transição o produz. `findByIdAndProposerId` existe e não é
 usado. Ver `TO-02`.
-→ `POST /trade-offers/{id}/cancel`, restrito ao proposer, só sobre `PENDING`.
+→ `POST /user-trade-offers/{id}/cancel`, restrito ao proposer, só sobre `PENDING`.
 
 ### OQ-03 — Não é possível esvaziar a vitrine
-`MakeAvailableTradeDto.stickerIds` é `@NotEmpty` e a operação substitui a lista inteira
+✅ `MakeAvailableTradeDto.stickerIds` é `@NotEmpty` e a operação substitui a lista inteira
 (`TI-03`). Não existe caminho para "não quero trocar mais nada".
 → Permitir lista vazia, ou criar endpoint de remoção.
 

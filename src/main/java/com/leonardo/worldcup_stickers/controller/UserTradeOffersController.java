@@ -73,6 +73,14 @@ public class UserTradeOffersController {
         return userTradeOffersService.rejectOffer(userId, offerId, noteOf(body));
     }
 
+    @PostMapping("/{offerId}/cancel")
+    public boolean cancelOffer(
+            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
+            @PathVariable Long offerId,
+            @Valid @RequestBody(required = false) RespondOfferDto body) {
+        return userTradeOffersService.cancelOffer(userId, offerId, noteOf(body));
+    }
+
     private static String noteOf(RespondOfferDto body) {
         return body == null ? null : body.note();
     }

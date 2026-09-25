@@ -161,7 +161,6 @@ public class UserTradeOffersService {
         UserEntity proposer = offer.getProposer();
         UserEntity receiver = offer.getReceiver();
 
-        // re-check ownership on both sides — state may have changed since the offer
         assertOwns(proposer, offer.getOfferedStickerIds());
         assertOwns(receiver, offer.getRequestedStickerIds());
 
@@ -193,6 +192,18 @@ public class UserTradeOffersService {
         return true;
     }
 
+    @Transactional
+    public boolean cancelOffer(Long proposerId, Long offerId, String note) {
+        UserTradeOffersEntity offer = loadPendingOfferForProposer(proposerId, offerId);
+
+        offer.setStatus(TradeStatusEnum.CANCELLED);
+        offer.setRespondedAt(LocalDateTime.now());
+        UserTradeOffersEntity saved = userTradeOffersRepository.save(offer);
+        log(saved, TradeStatusEnum.REJECTED, offer.getReceiver(), note);
+
+        return true;
+    }
+
     private Map<Long, StickerSummaryDto> loadStickerSummaries(List<UserTradeOffersEntity> offers) {
         Set<Long> stickerIds = offers.stream()
                 .flatMap(offer -> Stream.concat(
@@ -215,6 +226,17 @@ public class UserTradeOffersService {
 
     private UserTradeOffersEntity loadPendingOfferForReceiver(Long receiverId, Long offerId) {
         UserTradeOffersEntity offer = userTradeOffersRepository.findByIdAndReceiverId(offerId, receiverId)
+                .orElseThrow(() -> new TradeOfferNotFoundException(offerId));
+
+        if (offer.getStatus() != TradeStatusEnum.PENDING) {
+            throw new InvalidTradeOfferException(
+                    "Trade offer " + offerId + " is already " + offer.getStatus());
+        }
+        return offer;
+    }
+
+    private UserTradeOffersEntity loadPendingOfferForProposer(Long proposerId, Long offerId) {
+        UserTradeOffersEntity offer = userTradeOffersRepository.findByIdAndProposerId(offerId, proposerId)
                 .orElseThrow(() -> new TradeOfferNotFoundException(offerId));
 
         if (offer.getStatus() != TradeStatusEnum.PENDING) {

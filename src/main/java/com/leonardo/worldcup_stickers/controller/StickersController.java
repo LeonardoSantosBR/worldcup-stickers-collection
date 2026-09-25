@@ -3,6 +3,7 @@ package com.leonardo.worldcup_stickers.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,5 +53,11 @@ public class StickersController {
             @RequestParam(required = false) String name,
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId) {
         return userTradeInventoriesService.findAllAvailableForTrade(userId, page, limit, name);
+    }
+
+    @PatchMapping("/clear-available-trades")
+    public boolean clearAvailableTrades(
+            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId) {
+        return userTradeInventoriesService.clearAvailableTrades(userId);
     }
 }

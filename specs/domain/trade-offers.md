@@ -36,7 +36,7 @@ finalizada → `InvalidTradeOfferException` → **400** com a mensagem
 o produz.** Não há endpoint de cancelamento pelo proposer. ⚠️ Ver
 [open-questions.md](../open-questions.md).
 
-## Criar oferta — `POST /trade-offers/make-offer`
+## Criar oferta — `POST /user-trade-offers/make-offer`
 
 Validações, **na ordem em que rodam** (a primeira que falhar aborta):
 
@@ -75,7 +75,7 @@ ao mesmo tempo. Nada é reservado. O repositório expõe
 
 Resposta: **201 Created** com `TradeOfferDto`.
 
-## Aceitar — `POST /trade-offers/{offerId}/accept`
+## Aceitar — `POST /user-trade-offers/{offerId}/accept`
 
 **TO-12 — Só o receiver aceita.** A busca é `findByIdAndReceiverId(offerId, receiverId)` —
 se o usuário autenticado não for o receiver, o resultado é `TradeOfferNotFoundException` →
@@ -120,7 +120,7 @@ oferta invalidada. É quem causou a mudança de estado.
 oferta invalidada é um terceiro, sua posse não é reconsultada (`ownedByUser.get(...)` é
 `null` e a condição é ignorada para ele). Isso é correto: a posse de terceiros não mudou.
 
-## Listar recebidas — `GET /trade-offers/inbox`
+## Listar recebidas — `GET /user-trade-offers/inbox`
 
 **TO-28 — O inbox devolve apenas ofertas em que o usuário autenticado é o receiver.**
 O filtro é `receiverId` = id do token (`AU-07`); não há parâmetro para consultar o inbox
@@ -166,7 +166,7 @@ de leitura: precisa ser renderizável sem chamadas extras. Traz `proposerName` a
 `@SQLRestriction`, então uma figurinha apagada depois da oferta some do mapa. O `id` é
 preservado — a oferta histórica não perde informação. O cliente precisa tolerar `name` nulo.
 
-## Recusar — `POST /trade-offers/{offerId}/reject`
+## Recusar — `POST /user-trade-offers/{offerId}/reject`
 
 **TO-21 — Recusar não move nada.** Só troca o status para `REJECTED`, carimba
 `respondedAt` e grava o log. Sem revalidação de posse, sem sync de vitrine, sem cascata.

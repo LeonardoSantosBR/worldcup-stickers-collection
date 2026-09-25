@@ -139,15 +139,16 @@ All routes except the two public ones require `Authorization: Bearer <token>`.
 
 | Method | Route | Description | Auth |
 |---|---|---|---|
-| `POST` | `/trade-offers/make-offer` | Create an offer → `201 Created` | 🔒 |
-| `POST` | `/trade-offers/{offerId}/accept` | Accept — executes the transfer | 🔒 |
-| `POST` | `/trade-offers/{offerId}/reject` | Reject — nothing changes hands | 🔒 |
+| `POST` | `/user-trade-offers/make-offer` | Create an offer → `201 Created` | 🔒 |
+| `POST` | `/user-trade-offers/{offerId}/accept` | Accept — executes the transfer | 🔒 |
+| `POST` | `/user-trade-offers/{offerId}/reject` | Reject — nothing changes hands | 🔒 |
+| `POST` | `/user-trade-offers/{offerId}/cancel` | Cancel — nothing changes hands | 🔒 |
 
 <details>
 <summary>Example: creating an offer</summary>
 
 ```http
-POST /trade-offers/make-offer
+POST /user-trade-offers/make-offer
 Authorization: Bearer <token>
 Content-Type: application/json
 

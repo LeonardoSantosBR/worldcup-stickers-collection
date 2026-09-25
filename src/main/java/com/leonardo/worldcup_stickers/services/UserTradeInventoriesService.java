@@ -1,5 +1,6 @@
 package com.leonardo.worldcup_stickers.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -58,15 +59,26 @@ public class UserTradeInventoriesService {
         return true;
     }
 
+    @Transactional()
+    public boolean clearAvailableTrades(Long userId) {
+        UserTradeInventoryEntity inventory = loadOrCreateInventory(userId);
+        inventory.setAvailableStickerIds(new ArrayList<>());
+        inventory.setUpdatedAt(LocalDateTime.now());
+        userTradeInventoriesRepository.save(inventory);
+        return true;
+    }
+
     @Transactional(readOnly = true)
-    public PageResponseDto<AvailableTradeStickerDto> findAllAvailableForTrade(Long userId, int page, int limit, String name) {
+    public PageResponseDto<AvailableTradeStickerDto> findAllAvailableForTrade(Long userId, int page, int limit,
+            String name) {
         Pageable pageable = PageRequest.of(
                 Math.max(page - 1, 0),
                 Math.min(Math.max(limit, 1), MAX_LIMIT));
 
         String nameFilter = (name == null || name.isBlank()) ? null : name.trim();
 
-        Page<AvailableTradeStickerView> result = userTradeInventoriesRepository.findAllAvailableForTrade(userId, nameFilter, pageable);
+        Page<AvailableTradeStickerView> result = userTradeInventoriesRepository.findAllAvailableForTrade(userId,
+                nameFilter, pageable);
         return PageResponseDto.from(result, AvailableTradeStickerDto::fromView);
     }
 
