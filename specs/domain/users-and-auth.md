@@ -26,6 +26,10 @@ transação, um `UserTradeInventoryEntity` vinculado ao usuário com `availableS
 Isso garante que nenhum fluxo posterior precise lidar com "usuário sem vitrine".
 Ver [trade-inventory.md](trade-inventory.md).
 
+**AU-13 — Todo usuário nasce com um registro financeiro zerado.** O cadastro cria, na mesma
+transação, um `UserFinancialEntity` vinculado ao usuário, com `money = 0` e `coins = 0`.
+Cada usuário pode ter no máximo um registro financeiro.
+
 **AU-04 — Login devolve um JWT.** `POST /auth/signin` valida e-mail + senha e retorna
 `{ "token": "<jwt>" }`. E-mail inexistente e senha errada produzem **exatamente a mesma
 resposta** (`InvalidCredentialsException` → **401**) — não vaze qual dos dois falhou.

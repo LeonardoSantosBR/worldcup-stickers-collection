@@ -12,12 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.leonardo.worldcup_stickers.dto.MyProfileDto;
 import com.leonardo.worldcup_stickers.dto.MyStickerDto;
 import com.leonardo.worldcup_stickers.dto.PageResponseDto;
+import com.leonardo.worldcup_stickers.entities.UserFinancialEntity;
 import com.leonardo.worldcup_stickers.entities.UserEntity;
 import com.leonardo.worldcup_stickers.entities.UserStickerEntity;
 import com.leonardo.worldcup_stickers.entities.UserTradeInventoryEntity;
 import com.leonardo.worldcup_stickers.exceptions.EmailAlreadyExistsException;
 import com.leonardo.worldcup_stickers.exceptions.UserNotFoundException;
 import com.leonardo.worldcup_stickers.repositories.StickersRepository;
+import com.leonardo.worldcup_stickers.repositories.UserFinancialRepository;
 import com.leonardo.worldcup_stickers.repositories.UserStickersRepository;
 import com.leonardo.worldcup_stickers.repositories.UserTradeInventoriesRepository;
 import com.leonardo.worldcup_stickers.repositories.UsersRepository;
@@ -29,6 +31,7 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final UserStickersRepository userStickersRepository;
     private final UserTradeInventoriesRepository userTradeInventoriesRepository;
+    private final UserFinancialRepository userFinancialRepository;
     private final StickersRepository stickersRepository;
     private final HashService hashService;
 
@@ -36,11 +39,13 @@ public class UsersService {
             UsersRepository usersRepository,
             UserStickersRepository userStickersRepository,
             UserTradeInventoriesRepository userTradeInventoriesRepository,
+            UserFinancialRepository userFinancialRepository,
             StickersRepository stickersRepository,
             HashService hashService) {
         this.usersRepository = usersRepository;
         this.userStickersRepository = userStickersRepository;
         this.userTradeInventoriesRepository = userTradeInventoriesRepository;
+        this.userFinancialRepository = userFinancialRepository;
         this.stickersRepository = stickersRepository;
         this.hashService = hashService;
     }
@@ -57,6 +62,11 @@ public class UsersService {
 
         userTradeInventoriesRepository.save(
                 UserTradeInventoryEntity.builder()
+                        .user(savedUser)
+                        .build());
+
+        userFinancialRepository.save(
+                UserFinancialEntity.builder()
                         .user(savedUser)
                         .build());
 

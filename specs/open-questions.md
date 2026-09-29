@@ -67,8 +67,8 @@ cascata (`TO-18`), transferência com `quantity = 1` (`CO-04`), sync de vitrine 
 não têm rede de proteção.
 → As regras deste diretório são a especificação de teste: cada `TO-xx` / `TI-xx` vira um caso.
 
-### OQ-10 — Não há migrations
-`ddl-auto` do Hibernate gerencia o schema. Sem Flyway/Liquibase, mudanças de schema não são
+### OQ-10 — Não há migrations _(resolvido)_
+✅ `ddl-auto` do Hibernate gerencia o schema. Sem Flyway/Liquibase, mudanças de schema não são
 versionadas nem reproduzíveis, e renomear um valor de enum (`ST-05`) é irreversível.
 
 ---
