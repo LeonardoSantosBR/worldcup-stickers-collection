@@ -33,18 +33,18 @@ usado. Ver `TO-02`.
 
 ## Game design não definido
 
-### OQ-04 — Pacotes são infinitos e gratuitos
-Sem custo, cooldown, moeda ou limite diário (`PK-05`). Como toda troca depende de escassez,
-a economia do jogo é degenerada: é sempre mais barato abrir pacotes do que negociar.
-→ Decisão de produto pendente: cooldown? moeda? pacotes diários?
+### OQ-04 — Pacotes são infinitos e gratuitos _(resolvido)_
+✅ Cada pacote custa 7 coins. `POST /stickers/open-package` valida o saldo antes de abrir o
+pacote e desconta o custo na mesma transação da abertura. Sem saldo suficiente, a compra é
+rejeitada.
 
-### OQ-05 — O álbum não tem "fim"
-Não há conceito de álbum completo, recompensa ou estado terminal. `completePercentage`
-chega a 100% e nada acontece.
+### OQ-05 — O álbum não tem recompensa ao completar _(decisão intencional)_
+✅ Ao chegar a 100% em `completePercentage`, o usuário não recebe recompensa nem há mudança
+de estado. Completar o álbum não tem efeito adicional.
 
-### OQ-06 — Raridade não influencia a troca
-`LEGENDARY` sai 6× menos que `COMMON`, mas o sistema aceita 1 lendária por 1 comum sem
-qualquer sinal de desequilíbrio (`ST-07`). É intencional?
+### OQ-06 — Raridade não influencia a troca _(decisão intencional)_
+✅ A raridade não impõe regras nem proporções às trocas. Cabe ao usuário avaliar se quer ou não
+aceitar uma troca, inclusive quando as figurinhas têm raridades diferentes.
 
 ---
 
