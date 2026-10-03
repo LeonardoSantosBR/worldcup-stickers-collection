@@ -51,10 +51,10 @@ aceitar uma troca, inclusive quando as figurinhas têm raridades diferentes.
 ## Corretude e robustez
 
 ### OQ-07 — Sem controle de concorrência nas trocas
-Nenhum lock otimista (`@Version`) ou pessimista. Dois aceites simultâneos envolvendo a mesma
-figurinha dependem só do isolamento do banco. A revalidação de posse (`TO-13`) estreita a
-janela, não a fecha. Ver `TO-27`.
-→ `@Version` em `UserStickerEntity`, ou `SELECT ... FOR UPDATE` na leitura de posse.
+✅ `@Version` em `UserStickerEntity` detecta alterações concorrentes na posse, e `@Version` em
+`UserTradeOffersEntity` impede que dois pedidos aceitem ou alterem a mesma oferta com base em
+estado desatualizado. As falhas de optimistic locking retornam `409 Conflict`. O aceite mantém
+transferências, sincronização de vitrine, invalidação de ofertas e logs dentro da mesma transação.
 
 ### OQ-08 — Pool de raridade vazio quebra com 500
 `drawStickerByRarity` faz `pool.get(random.nextInt(pool.size()))` sem checar vazio (`PK-08`).

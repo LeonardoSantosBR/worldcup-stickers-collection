@@ -1,0 +1,5 @@
+ALTER TABLE user_stickers
+    ADD COLUMN version BIGINT NOT NULL DEFAULT 0;
+
+ALTER TABLE user_trade_offers
+    ADD COLUMN version BIGINT NOT NULL DEFAULT 0;
