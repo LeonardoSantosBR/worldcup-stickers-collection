@@ -16,4 +16,9 @@
 
 - *Flyway* é ferramenta de código aberto para migração e versionamento de banco de dados Ele funciona como um sistema de controle de versão (semelhante ao Git), mas focado na estrutura e nos dados do seu banco de dados (tabelas, colunas, índices e procedures).
 
-- *Lombok* é um Framework criado sob licença MIT, podendo ser usado livremente em qualquer projeto Java. Seu principal objetivo é diminuir a verbosidade das classes de mapeamento JPA, DTOs e Beans, Sua vantagem é evitar a repetição de código, como a criação de gets e sets para todos os atributos, métodos equals e hashCode, toString, Construtores entre outros. Dessa forma, o código fica mais limpo e claro.
+- *Lombok* é um Framework criado sob licença MIT, podendo ser usado livremente em qualquer projeto Java. Seu principal objetivo é diminuir a verbosidade das classes de mapeamento JPA, DTOs e Beans. Sua vantagem é evitar a repetição de código, como a criação de gets e sets para todos os atributos, métodos equals, hashCode, toString, construtores entre outros. Dessa forma o código fica mais limpo e claro.
+
+- *SpringApplication* cria o "cérebro" da aplicação, que gerencia todos os seus componentes (Beans), injeções de dependência e configurações.
+• Ele analisa as bibliotecas que estão no seu projeto (como banco de dados, segurança ou web) e configura tudo automaticamente para você não perder tempo com arquivos XML ou classes de configuração complexas.
+• e o seu projeto for uma aplicação web, ele localiza e inicializa automaticamente um servidor (geralmente o Tomcat) na porta padrão 8080, fazendo com que seu app fique pronto para receber requisições HTTP imediatamente.
+
