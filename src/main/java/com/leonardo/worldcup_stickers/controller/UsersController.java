@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.leonardo.worldcup_stickers.config.JwtAuthFilter;
 import com.leonardo.worldcup_stickers.dto.MyProfileDto;
-import com.leonardo.worldcup_stickers.dto.AddBalanceDto;
 import com.leonardo.worldcup_stickers.dto.MyStickerDto;
 import com.leonardo.worldcup_stickers.dto.PageResponseDto;
 import com.leonardo.worldcup_stickers.entities.UserEntity;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -30,20 +28,6 @@ public class UsersController {
     @PostMapping
     public boolean create(@RequestBody UserEntity user) {
         return this.usersService.create(user);
-    }
-
-    @PostMapping("/add-balance")
-    public boolean addBalance(
-            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
-            @Valid @RequestBody AddBalanceDto body) {
-        return this.usersService.addBalance(userId, body.amount());
-    }
-
-    @PostMapping("/add-coins")
-    public boolean addCoins(
-            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
-            @Valid @RequestBody AddBalanceDto body) {
-        return this.usersService.addCoins(userId, body.amount());
     }
 
     @GetMapping("/my-profile")

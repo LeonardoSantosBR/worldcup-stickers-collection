@@ -1,7 +1,6 @@
 package com.leonardo.worldcup_stickers.services;
 
 import java.util.List;
-import java.math.BigDecimal;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +17,6 @@ import com.leonardo.worldcup_stickers.entities.UserEntity;
 import com.leonardo.worldcup_stickers.entities.UserStickerEntity;
 import com.leonardo.worldcup_stickers.entities.UserTradeInventoryEntity;
 import com.leonardo.worldcup_stickers.exceptions.EmailAlreadyExistsException;
-import com.leonardo.worldcup_stickers.exceptions.InsufficientBalanceException;
 import com.leonardo.worldcup_stickers.exceptions.UserNotFoundException;
 import com.leonardo.worldcup_stickers.repositories.StickersRepository;
 import com.leonardo.worldcup_stickers.repositories.UserFinancialRepository;
@@ -72,28 +70,6 @@ public class UsersService {
                         .user(savedUser)
                         .build());
 
-        return true;
-    }
-
-    @Transactional
-    public boolean addBalance(Long userId, BigDecimal amount) {
-        UserFinancialEntity financial = userFinancialRepository.findByUserId(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-        financial.setMoney(financial.getMoney().add(amount));
-        userFinancialRepository.save(financial);
-        return true;
-    }
-
-    @Transactional
-    public boolean addCoins(Long userId, BigDecimal amount) {
-        UserFinancialEntity financial = userFinancialRepository.findByUserId(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-        if (financial.getMoney().compareTo(amount) < 0) {
-            throw new InsufficientBalanceException();
-        }
-        financial.setMoney(financial.getMoney().subtract(amount));
-        financial.setCoins(financial.getCoins().add(amount));
-        userFinancialRepository.save(financial);
         return true;
     }
 
