@@ -7,7 +7,10 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.http.HttpStatus;
+import tools.jackson.databind.ObjectMapper;
 
+import com.leonardo.worldcup_stickers.dto.ErrorResponseDto;
 import com.leonardo.worldcup_stickers.services.JwtService;
 
 import io.jsonwebtoken.Claims;
@@ -30,9 +33,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
     private final JwtService jwtService;
+    private final ObjectMapper objectMapper;
 
-    public JwtAuthFilter(JwtService jwtService) {
+    public JwtAuthFilter(JwtService jwtService, ObjectMapper objectMapper) {
         this.jwtService = jwtService;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -67,8 +72,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     private void unauthorized(HttpServletResponse response, String message) throws IOException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
-        response.getWriter().write("{\"error\":\"" + message + "\"}");
+        response.setCharacterEncoding("UTF-8");
+        objectMapper.writeValue(response.getWriter(), ErrorResponseDto.of(
+                HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase(), message));
     }
 }

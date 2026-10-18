@@ -34,7 +34,7 @@ The interesting problems here aren't "how do I save a row" — they're "what hap
 The heart of the application is a three-step flow:
 
 1. **Open a pack** — `POST /stickers/open-package` draws 7 random stickers weighted by rarity (60% `COMMON`, 30% `RARE`, 10% `LEGENDARY`) and adds them to the user's collection, incrementing the quantity for duplicates.
-2. **List spares for trade** — a user publishes stickers into their **trade inventory**, which is what other users can browse via `GET /stickers/available-trades` (the listing excludes your own offers).
+2. **List spares for trade** — a user publishes stickers into their **trade inventory**, which is what other users can browse via `GET /trade-inventories/available-trades` (the listing excludes your own offers).
 3. **Negotiate** — the **proposer** creates an offer naming a **receiver**, the stickers they *want*, and the stickers they *give*. The receiver accepts or rejects it.
 
 ### What happens on `accept`
@@ -91,7 +91,7 @@ config/        JWT filter, global exception handler
 
 - **Stateless JWT auth** — `JwtAuthFilter` (a `OncePerRequestFilter`) validates the `Bearer` token on every request and exposes the caller as a `user_id` request attribute, which controllers read with `@RequestAttribute`. Public routes (`POST /users`, `POST /auth/signin`) are whitelisted via `AntPathMatcher`.
 - **Passwords are never stored in plain text** — hashed with BCrypt.
-- **Global exception handling** — `@RestControllerAdvice` turns any `ApiException` into a consistent JSON body (`timestamp`, `status`, `error`, `message`). Each domain exception declares its own status, so services just `throw` and stay HTTP-agnostic.
+- **Global exception handling** — application errors, authentication failures, and request validation share a JSON body (`timestamp`, `status`, `error`, `message`, `fieldErrors`). Each domain exception declares its own status, so services just `throw` and stay HTTP-agnostic.
 - **Soft delete** — `User` and `Sticker` use `@SQLDelete` + `@SQLRestriction`, flagging `deleted_at` instead of removing rows.
 - **Date auditing** — `createdAt` / `updatedAt` filled automatically via `@PrePersist` / `@PreUpdate`.
 - **Pagination** — a generic `PageResponseDto<T>` wraps Spring's `Page`, converting to 1-based page numbers for the API.
@@ -122,7 +122,7 @@ All routes except the two public ones require `Authorization: Bearer <token>`.
 
 | Method | Route | Description | Auth |
 |---|---|---|---|
-| `POST` | `/users` | Register a new user | Public |
+| `POST` | `/users` | Register a new user → `201 Created` with `userId` | Public |
 | `POST` | `/auth/signin` | Log in, returns a JWT | Public |
 | `GET` | `/users/my-profile` | Authenticated user's profile | 🔒 |
 | `GET` | `/users/my-stickers?page=1&limit=20` | Paginated collection | 🔒 |
@@ -132,8 +132,17 @@ All routes except the two public ones require `Authorization: Bearer <token>`.
 | Method | Route | Description | Auth |
 |---|---|---|---|
 | `POST` | `/stickers/open-package` | Open a pack of 7 random stickers | 🔒 |
-| `POST` | `/stickers/make-available-trade` | Publish stickers to your trade inventory | 🔒 |
-| `GET` | `/stickers/available-trades?page=1&limit=20` | Browse everyone else's listed stickers | 🔒 |
+| `POST` | `/trade-inventories/make-available-trade` | Publish stickers; returns the updated inventory | 🔒 |
+| `GET` | `/trade-inventories/available-trades?page=1&limit=20` | Browse everyone else's listed stickers | 🔒 |
+| `PATCH` | `/trade-inventories/clear-available-trades` | Remove all listed stickers; returns the updated inventory | 🔒 |
+
+Errors from application rules, authentication, and request validation use the same JSON
+shape: `timestamp`, `status`, `error`, `message`, and `fieldErrors` (empty when there are no
+field-specific validation errors).
+
+`POST /users` accepts `name`, `email`, and `password`; the email must be valid and all fields
+are required. `POST /stickers/open-package` returns sticker data without persistence audit
+fields (`createdAt`, `updatedAt`, `deletedAt`).
 
 ### Trade offers
 

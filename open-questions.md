@@ -91,28 +91,27 @@ Nem em `/auth/signin` (força bruta) nem em `/stickers/open-package`.
 
 ## Qualidade de contrato
 
-### OQ-14 — Duas violações de "entidade não atravessa HTTP" (`AR-06`)
-- `POST /stickers/open-package` devolve `List<StickerEntity>`, vazando `createdAt`,
-  `updatedAt`, `deletedAt` (`PK-09`).
-- `POST /users` recebe `UserEntity` cru no corpo — sem Bean Validation, e um cliente pode
-  tentar enviar `role`, `id` ou `deletedAt`.
+### OQ-14 — Duas violações de "entidade não atravessa HTTP" _(resolvido)_
+✅ `POST /stickers/open-package` retorna `List<StickerDto>`, sem campos de auditoria da
+entidade (`PK-09`). `POST /users` recebe `UserCreateDto` com validação para nome, email e
+senha; `role`, `id` e `deletedAt` não fazem parte do contrato de entrada.
 
-### OQ-15 — Três formatos de erro diferentes
-`GlobalExceptionHandler`, `JwtAuthFilter` e Bean Validation respondem em formatos distintos
-(`EH-05`). O cliente precisa tratar os três.
+### OQ-15 — Três formatos de erro diferentes _(resolvido)_
+✅ `GlobalExceptionHandler`, `JwtAuthFilter` e falhas de Bean Validation respondem com
+`ErrorResponseDto`: `timestamp`, `status`, `error`, `message` e `fieldErrors`.
 
-### OQ-16 — Endpoints booleanos
-`POST /users` e `POST /stickers/make-available-trade` devolvem `true` cru. Sem corpo útil e
-sem forma de evoluir a resposta.
+### OQ-16 — Endpoints booleanos _(resolvido)_
+✅ `POST /users` retorna `201 Created` com `userId`; as operações de publicar/limpar a
+vitrine retornam o `TradeInventoryDto` atualizado.
 
-### OQ-17 — `StickersController` acumula dois domínios
-Injeta `StickersService` **e** `UserTradeInventoriesService`; `/stickers/make-available-trade`
-e `/stickers/available-trades` são vitrine, não figurinha. Cabem melhor em um
-`TradeInventoriesController` sob `/trade-inventories`. Mover quebra o contrato atual.
+### OQ-17 — `StickersController` acumula dois domínios _(resolvido)_
+✅ Os endpoints de vitrine foram movidos para `TradeInventoriesController` sob
+`/trade-inventories`; `StickersController` agora depende apenas de `StickersService`.
+As rotas antigas sob `/stickers` deixam de existir.
 
-### OQ-18 — `AuthDto` fora do padrão
-Classe mutável com campos públicos + getters/setters, sem validação, enquanto todos os
-outros DTOs são `record` com Bean Validation (`AR-05`).
+### OQ-18 — `AuthDto` fora do padrão _(resolvido)_
+✅ `AuthDto` agora é um `record` com `@NotBlank` nos dois campos e `@Email` no email;
+`POST /auth/signin` ativa Bean Validation com `@Valid`.
 
 ### OQ-19 — `StickerSummaryDto` pode ser raso demais _(inbox resolvido)_
 ✅ O inbox devolve `proposerName` e as figurinhas como `{ id, name }` (`TO-33`…`TO-36`),

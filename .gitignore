@@ -6,6 +6,7 @@ target/
 
 ### Application properties ###
 *.properties
+!/.mvn/wrapper/maven-wrapper.properties
 
 ### STS ###
 .apt_generated

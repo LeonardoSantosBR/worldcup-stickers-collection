@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.leonardo.worldcup_stickers.dto.AuthDto;
 import com.leonardo.worldcup_stickers.dto.TokenResponseDto;
 import com.leonardo.worldcup_stickers.services.AuthService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -19,8 +20,8 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public TokenResponseDto signin(@RequestBody AuthDto body) {
-        String token = authService.signin(body.getEmail(), body.getPassword());
+    public TokenResponseDto signin(@Valid @RequestBody AuthDto body) {
+        String token = authService.signin(body.email(), body.password());
         return new TokenResponseDto(token);
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.leonardo.worldcup_stickers.entities.UserFinancialEntity;
 import com.leonardo.worldcup_stickers.entities.UserEntity;
+import com.leonardo.worldcup_stickers.dto.UserCreateDto;
 import com.leonardo.worldcup_stickers.entities.UserTradeInventoryEntity;
 import com.leonardo.worldcup_stickers.exceptions.EmailAlreadyExistsException;
 import com.leonardo.worldcup_stickers.repositories.UserFinancialRepository;
@@ -30,12 +31,15 @@ public class UsersService {
     }
 
     @Transactional
-    public boolean create(UserEntity user) {
-        if (usersRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new EmailAlreadyExistsException(user.getEmail());
+    public Long create(UserCreateDto body) {
+        if (usersRepository.findByEmail(body.email()).isPresent()) {
+            throw new EmailAlreadyExistsException(body.email());
         }
-        String hashedPassword = hashService.hash(user.getPassword());
-        user.setPassword(hashedPassword);
+        UserEntity user = UserEntity.builder()
+                .name(body.name())
+                .email(body.email())
+                .password(hashService.hash(body.password()))
+                .build();
         UserEntity savedUser = usersRepository.save(user);
         userTradeInventoriesRepository.save(
                 UserTradeInventoryEntity.builder()
@@ -45,7 +49,7 @@ public class UsersService {
                 UserFinancialEntity.builder()
                         .user(savedUser)
                         .build());
-        return true;
+        return savedUser.getId();
     }
 
 }

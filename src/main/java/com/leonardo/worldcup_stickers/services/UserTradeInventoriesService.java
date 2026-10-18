@@ -42,7 +42,7 @@ public class UserTradeInventoriesService {
     }
 
     @Transactional
-    public boolean makeAvailableTrade(Long userId, List<Long> stickerIds) {
+    public TradeInventoryDto makeAvailableTrade(Long userId, List<Long> stickerIds) {
         Set<Long> requested = new LinkedHashSet<>(stickerIds);
         Set<Long> owned = new HashSet<>(userStickersRepository.findStickerIdsByUserId(userId));
 
@@ -55,17 +55,15 @@ public class UserTradeInventoriesService {
         UserTradeInventoryEntity inventory = loadOrCreateInventory(userId);
         inventory.setAvailableStickerIds(new ArrayList<>(requested));
 
-        TradeInventoryDto.fromEntity(userTradeInventoriesRepository.save(inventory));
-        return true;
+        return TradeInventoryDto.fromEntity(userTradeInventoriesRepository.save(inventory));
     }
 
     @Transactional()
-    public boolean clearAvailableTrades(Long userId) {
+    public TradeInventoryDto clearAvailableTrades(Long userId) {
         UserTradeInventoryEntity inventory = loadOrCreateInventory(userId);
         inventory.setAvailableStickerIds(new ArrayList<>());
         inventory.setUpdatedAt(LocalDateTime.now());
-        userTradeInventoriesRepository.save(inventory);
-        return true;
+        return TradeInventoryDto.fromEntity(userTradeInventoriesRepository.save(inventory));
     }
 
     @Transactional(readOnly = true)
