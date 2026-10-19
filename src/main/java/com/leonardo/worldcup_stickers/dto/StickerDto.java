@@ -1,6 +1,6 @@
 package com.leonardo.worldcup_stickers.dto;
 
-import com.leonardo.worldcup_stickers.entities.StickerEntity;
+import com.leonardo.worldcup_stickers.entity.StickerEntity;
 import com.leonardo.worldcup_stickers.enums.PositionEnum;
 import com.leonardo.worldcup_stickers.enums.RarityEnum;
 import com.leonardo.worldcup_stickers.enums.StickerGroupEnum;

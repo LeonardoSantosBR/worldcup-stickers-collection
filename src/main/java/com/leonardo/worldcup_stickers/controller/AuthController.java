@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.leonardo.worldcup_stickers.dto.AuthDto;
 import com.leonardo.worldcup_stickers.dto.TokenResponseDto;
-import com.leonardo.worldcup_stickers.services.AuthService;
+import com.leonardo.worldcup_stickers.service.AuthService;
 import jakarta.validation.Valid;
 
 @RestController

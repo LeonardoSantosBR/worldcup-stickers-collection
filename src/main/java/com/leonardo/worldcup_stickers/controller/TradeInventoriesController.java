@@ -14,7 +14,7 @@ import com.leonardo.worldcup_stickers.dto.AvailableTradeStickerDto;
 import com.leonardo.worldcup_stickers.dto.MakeAvailableTradeDto;
 import com.leonardo.worldcup_stickers.dto.PageResponseDto;
 import com.leonardo.worldcup_stickers.dto.TradeInventoryDto;
-import com.leonardo.worldcup_stickers.services.UserTradeInventoriesService;
+import com.leonardo.worldcup_stickers.service.UserTradeInventoriesService;
 
 import jakarta.validation.Valid;
 

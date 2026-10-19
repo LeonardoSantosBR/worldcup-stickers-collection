@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.leonardo.worldcup_stickers.config.JwtAuthFilter;
 import com.leonardo.worldcup_stickers.dto.StickerDto;
-import com.leonardo.worldcup_stickers.services.StickersService;
+import com.leonardo.worldcup_stickers.service.StickersService;
 
 @RestController
 @RequestMapping("/stickers")
 public class StickersController {
     private final StickersService stickersService;
+
     public StickersController(StickersService stickersService) {
         this.stickersService = stickersService;
     }

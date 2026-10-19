@@ -10,7 +10,7 @@ import com.leonardo.worldcup_stickers.config.JwtAuthFilter;
 import com.leonardo.worldcup_stickers.dto.MyProfileDto;
 import com.leonardo.worldcup_stickers.dto.MyStickerDto;
 import com.leonardo.worldcup_stickers.dto.PageResponseDto;
-import com.leonardo.worldcup_stickers.services.MyProfileService;
+import com.leonardo.worldcup_stickers.service.MyProfileService;
 
 @RestController
 @RequestMapping("/my-profile")

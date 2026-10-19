@@ -4,20 +4,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import com.leonardo.worldcup_stickers.entities.UserTradeOffersEntity;
+import com.leonardo.worldcup_stickers.entity.UserTradeOffersEntity;
 import com.leonardo.worldcup_stickers.enums.TradeStatusEnum;
 
 public record TradeOfferDetailDto(
-    Long id,
-    Long proposerId,
-    String proposerName,
-    Long receiverId,
-    List<StickerSummaryDto> requestedStickers,
-    List<StickerSummaryDto> offeredStickers,
-    TradeStatusEnum status,
-    String message,
-    LocalDateTime createdAt,
-    LocalDateTime respondedAt) {
+        Long id,
+        Long proposerId,
+        String proposerName,
+        Long receiverId,
+        List<StickerSummaryDto> requestedStickers,
+        List<StickerSummaryDto> offeredStickers,
+        TradeStatusEnum status,
+        String message,
+        LocalDateTime createdAt,
+        LocalDateTime respondedAt) {
 
     public static TradeOfferDetailDto fromEntity(UserTradeOffersEntity entity, Map<Long, StickerSummaryDto> stickers) {
         return new TradeOfferDetailDto(

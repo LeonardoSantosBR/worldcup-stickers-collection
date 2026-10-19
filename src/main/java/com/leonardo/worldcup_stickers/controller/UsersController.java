@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.leonardo.worldcup_stickers.dto.UserCreatedDto;
 import com.leonardo.worldcup_stickers.dto.UserCreateDto;
-import com.leonardo.worldcup_stickers.services.UsersService;
+import com.leonardo.worldcup_stickers.service.UsersService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -1,6 +1,6 @@
 package com.leonardo.worldcup_stickers.dto;
 
-import com.leonardo.worldcup_stickers.entities.UserEntity;
+import com.leonardo.worldcup_stickers.entity.UserEntity;
 
 public record MyProfileDto(
         String email,

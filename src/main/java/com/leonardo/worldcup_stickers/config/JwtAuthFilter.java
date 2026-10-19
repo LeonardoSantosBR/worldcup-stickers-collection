@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import tools.jackson.databind.ObjectMapper;
 
 import com.leonardo.worldcup_stickers.dto.ErrorResponseDto;
-import com.leonardo.worldcup_stickers.services.JwtService;
+import com.leonardo.worldcup_stickers.service.JwtService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -25,11 +25,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     public static final String USER_ID_ATTRIBUTE = "user_id";
 
-    private static final List<String> PUBLIC_PATHS = 
-        List.of(
+    private static final List<String> PUBLIC_PATHS = List.of(
             "POST /auth/signin",
-            "POST /users"
-        );
+            "POST /users");
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
     private final JwtService jwtService;

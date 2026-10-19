@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.leonardo.worldcup_stickers.config.JwtAuthFilter;
 import com.leonardo.worldcup_stickers.dto.AddBalanceDto;
-import com.leonardo.worldcup_stickers.services.UserFinancialService;
+import com.leonardo.worldcup_stickers.service.UserFinancialService;
 
 import jakarta.validation.Valid;
 
