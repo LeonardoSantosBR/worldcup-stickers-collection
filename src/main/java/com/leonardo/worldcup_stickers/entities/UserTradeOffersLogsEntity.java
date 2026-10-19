@@ -7,16 +7,9 @@ import com.leonardo.worldcup_stickers.enums.TradeStatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
-/**
- * Immutable history of every status change of a trade offer.
- *
- * One row is written on each transition: PENDING when the offer is created,
- * ACCEPTED / REJECTED when the receiver responds, CANCELLED when the proposer
- * gives up.
- */
 @Entity
 @Table(name = "user_trade_offers_logs", indexes = {
-    @Index(name = "idx_trade_offer_logs_offer", columnList = "trade_offer_id")
+        @Index(name = "idx_trade_offer_logs_offer", columnList = "trade_offer_id")
 })
 @Getter
 @Setter
