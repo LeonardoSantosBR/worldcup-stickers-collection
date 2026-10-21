@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.leonardo.worldcup_stickers.config.JwtAuthFilter;
-import com.leonardo.worldcup_stickers.dto.AddBalanceDto;
+import com.leonardo.worldcup_stickers.dto.AddMoneyDto;
 import com.leonardo.worldcup_stickers.service.UserFinancialService;
 
 import jakarta.validation.Valid;
@@ -21,17 +21,17 @@ public class UserFinancialController {
         this.userFinancialService = userFinancialService;
     }
 
-    @PostMapping("/add-balance")
-    public boolean addBalance(
+    @PostMapping("/add-money")
+    public boolean addMoney(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
-            @Valid @RequestBody AddBalanceDto body) {
-        return userFinancialService.addBalance(userId, body.amount());
+            @Valid @RequestBody AddMoneyDto body) {
+        return userFinancialService.addMoney(userId, body.amount());
     }
 
     @PostMapping("/add-coins")
     public boolean addCoins(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
-            @Valid @RequestBody AddBalanceDto body) {
+            @Valid @RequestBody AddMoneyDto body) {
         return userFinancialService.addCoins(userId, body.amount());
     }
 }

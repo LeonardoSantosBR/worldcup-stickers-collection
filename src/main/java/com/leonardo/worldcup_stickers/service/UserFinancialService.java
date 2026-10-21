@@ -19,7 +19,7 @@ public class UserFinancialService {
     }
 
     @Transactional
-    public boolean addBalance(Long userId, BigDecimal amount) {
+    public boolean addMoney(Long userId, BigDecimal amount) {
         UserFinancialEntity financial = findFinancial(userId);
         financial.setMoney(financial.getMoney().add(amount));
         userFinancialRepository.save(financial);
