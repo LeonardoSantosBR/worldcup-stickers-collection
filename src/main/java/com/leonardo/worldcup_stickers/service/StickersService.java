@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.leonardo.worldcup_stickers.entity.StickerEntity;
 import com.leonardo.worldcup_stickers.entity.UserEntity;
-import com.leonardo.worldcup_stickers.entity.UserFinancialEntity;
 import com.leonardo.worldcup_stickers.entity.UserStickerEntity;
+import com.leonardo.worldcup_stickers.entity.userFInancial.UserFinancialEntity;
 import com.leonardo.worldcup_stickers.enums.RarityEnum;
 import com.leonardo.worldcup_stickers.exception.InsufficientCoinsException;
 import com.leonardo.worldcup_stickers.exception.UserNotFoundException;

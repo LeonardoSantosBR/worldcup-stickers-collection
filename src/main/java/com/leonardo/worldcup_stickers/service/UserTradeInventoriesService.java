@@ -13,11 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.leonardo.worldcup_stickers.dto.AvailableTradeStickerDto;
-import com.leonardo.worldcup_stickers.dto.AvailableTradeStickerView;
 import com.leonardo.worldcup_stickers.dto.PageResponseDto;
 import com.leonardo.worldcup_stickers.dto.TradeInventoryDto;
-import com.leonardo.worldcup_stickers.entity.UserTradeInventoryEntity;
+import com.leonardo.worldcup_stickers.dto.availableTrade.AvailableTradeStickerDto;
+import com.leonardo.worldcup_stickers.dto.availableTrade.AvailableTradeStickerView;
+import com.leonardo.worldcup_stickers.entity.userTrade.UserTradeInventoryEntity;
 import com.leonardo.worldcup_stickers.exception.StickersNotOwnedException;
 import com.leonardo.worldcup_stickers.exception.UserNotFoundException;
 import com.leonardo.worldcup_stickers.repository.UserStickersRepository;

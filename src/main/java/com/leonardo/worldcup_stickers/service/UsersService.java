@@ -5,8 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.leonardo.worldcup_stickers.dto.UserCreateDto;
 import com.leonardo.worldcup_stickers.entity.UserEntity;
-import com.leonardo.worldcup_stickers.entity.UserFinancialEntity;
-import com.leonardo.worldcup_stickers.entity.UserTradeInventoryEntity;
+import com.leonardo.worldcup_stickers.entity.userFInancial.UserFinancialEntity;
+import com.leonardo.worldcup_stickers.entity.userTrade.UserTradeInventoryEntity;
 import com.leonardo.worldcup_stickers.exception.EmailAlreadyExistsException;
 import com.leonardo.worldcup_stickers.repository.UserFinancialRepository;
 import com.leonardo.worldcup_stickers.repository.UserTradeInventoriesRepository;

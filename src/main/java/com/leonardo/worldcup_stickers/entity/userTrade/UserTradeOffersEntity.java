@@ -1,4 +1,4 @@
-package com.leonardo.worldcup_stickers.entity;
+package com.leonardo.worldcup_stickers.entity.userTrade;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import com.leonardo.worldcup_stickers.entity.UserEntity;
 import com.leonardo.worldcup_stickers.enums.TradeStatusEnum;
 
 import jakarta.persistence.*;

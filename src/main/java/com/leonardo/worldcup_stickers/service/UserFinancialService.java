@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.leonardo.worldcup_stickers.entity.UserFinancialEntity;
+import com.leonardo.worldcup_stickers.entity.userFInancial.UserFinancialEntity;
 import com.leonardo.worldcup_stickers.exception.InsufficientBalanceException;
 import com.leonardo.worldcup_stickers.exception.UserNotFoundException;
 import com.leonardo.worldcup_stickers.repository.UserFinancialRepository;

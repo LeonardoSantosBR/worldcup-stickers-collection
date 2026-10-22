@@ -1,6 +1,8 @@
-package com.leonardo.worldcup_stickers.entity;
+package com.leonardo.worldcup_stickers.entity.userFInancial;
 
 import java.math.BigDecimal;
+
+import com.leonardo.worldcup_stickers.entity.UserEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

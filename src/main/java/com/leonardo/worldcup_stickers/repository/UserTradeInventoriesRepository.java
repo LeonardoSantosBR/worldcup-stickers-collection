@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.leonardo.worldcup_stickers.dto.AvailableTradeStickerView;
-import com.leonardo.worldcup_stickers.entity.UserTradeInventoryEntity;
+import com.leonardo.worldcup_stickers.dto.availableTrade.AvailableTradeStickerView;
+import com.leonardo.worldcup_stickers.entity.userTrade.UserTradeInventoryEntity;
 
 public interface UserTradeInventoriesRepository extends JpaRepository<UserTradeInventoryEntity, Long> {
        Optional<UserTradeInventoryEntity> findByUserId(Long userId);

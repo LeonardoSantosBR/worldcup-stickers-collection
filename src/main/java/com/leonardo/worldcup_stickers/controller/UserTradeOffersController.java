@@ -15,8 +15,8 @@ import com.leonardo.worldcup_stickers.config.JwtAuthFilter;
 import com.leonardo.worldcup_stickers.dto.MakeOfferDto;
 import com.leonardo.worldcup_stickers.dto.PageResponseDto;
 import com.leonardo.worldcup_stickers.dto.RespondOfferDto;
-import com.leonardo.worldcup_stickers.dto.TradeOfferDetailDto;
-import com.leonardo.worldcup_stickers.dto.TradeOfferDto;
+import com.leonardo.worldcup_stickers.dto.tradeOffer.TradeOfferDetailDto;
+import com.leonardo.worldcup_stickers.dto.tradeOffer.TradeOfferDto;
 import com.leonardo.worldcup_stickers.enums.TradeStatusEnum;
 import com.leonardo.worldcup_stickers.service.UserTradeOffersService;
 

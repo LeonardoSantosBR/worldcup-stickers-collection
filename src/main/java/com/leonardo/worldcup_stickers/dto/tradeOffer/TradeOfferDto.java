@@ -1,9 +1,9 @@
-package com.leonardo.worldcup_stickers.dto;
+package com.leonardo.worldcup_stickers.dto.tradeOffer;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.leonardo.worldcup_stickers.entity.UserTradeOffersEntity;
+import com.leonardo.worldcup_stickers.entity.userTrade.UserTradeOffersEntity;
 import com.leonardo.worldcup_stickers.enums.TradeStatusEnum;
 
 public record TradeOfferDto(

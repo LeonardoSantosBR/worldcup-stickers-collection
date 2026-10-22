@@ -3,7 +3,7 @@ package com.leonardo.worldcup_stickers.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.leonardo.worldcup_stickers.entity.UserTradeInventoryEntity;
+import com.leonardo.worldcup_stickers.entity.userTrade.UserTradeInventoryEntity;
 
 public record TradeInventoryDto(
         Long userId,

@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.leonardo.worldcup_stickers.entity.UserEntity;
 import com.leonardo.worldcup_stickers.entity.UserStickerEntity;
-import com.leonardo.worldcup_stickers.entity.UserTradeInventoryEntity;
+import com.leonardo.worldcup_stickers.entity.userTrade.UserTradeInventoryEntity;
 
 public interface MyProfileRepository extends JpaRepository<UserEntity, Long> {
         @Query("SELECT COUNT(us) FROM UserStickerEntity us WHERE us.user.id = :userId")

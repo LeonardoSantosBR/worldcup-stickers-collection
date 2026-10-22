@@ -1,4 +1,4 @@
-package com.leonardo.worldcup_stickers.dto;
+package com.leonardo.worldcup_stickers.dto.availableTrade;
 
 public interface AvailableTradeStickerView {
     Long getStickerId();

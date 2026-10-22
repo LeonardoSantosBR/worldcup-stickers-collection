@@ -14,7 +14,7 @@ import com.leonardo.worldcup_stickers.dto.MyStickerDto;
 import com.leonardo.worldcup_stickers.dto.PageResponseDto;
 import com.leonardo.worldcup_stickers.entity.UserEntity;
 import com.leonardo.worldcup_stickers.entity.UserStickerEntity;
-import com.leonardo.worldcup_stickers.entity.UserTradeInventoryEntity;
+import com.leonardo.worldcup_stickers.entity.userTrade.UserTradeInventoryEntity;
 import com.leonardo.worldcup_stickers.exception.UserNotFoundException;
 import com.leonardo.worldcup_stickers.repository.MyProfileRepository;
 
