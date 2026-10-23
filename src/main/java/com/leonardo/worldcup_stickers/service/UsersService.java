@@ -5,10 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.leonardo.worldcup_stickers.dto.UserCreateDto;
 import com.leonardo.worldcup_stickers.entity.UserEntity;
-import com.leonardo.worldcup_stickers.entity.userFInancial.UserFinancialEntity;
+import com.leonardo.worldcup_stickers.entity.UserCoinsEntity;
 import com.leonardo.worldcup_stickers.entity.userTrade.UserTradeInventoryEntity;
 import com.leonardo.worldcup_stickers.exception.EmailAlreadyExistsException;
-import com.leonardo.worldcup_stickers.repository.UserFinancialRepository;
+import com.leonardo.worldcup_stickers.repository.UserCoinsRepository;
 import com.leonardo.worldcup_stickers.repository.UserTradeInventoriesRepository;
 import com.leonardo.worldcup_stickers.repository.UsersRepository;
 
@@ -16,17 +16,17 @@ import com.leonardo.worldcup_stickers.repository.UsersRepository;
 public class UsersService {
     private final UsersRepository usersRepository;
     private final UserTradeInventoriesRepository userTradeInventoriesRepository;
-    private final UserFinancialRepository userFinancialRepository;
+    private final UserCoinsRepository userCoinsRepository;
     private final HashService hashService;
 
     public UsersService(
             UsersRepository usersRepository,
             UserTradeInventoriesRepository userTradeInventoriesRepository,
-            UserFinancialRepository userFinancialRepository,
-            HashService hashService) {
+            UserCoinsRepository userFinancialRepository,
+            HashService hashService, UserCoinsRepository userCoinsRepository) {
         this.usersRepository = usersRepository;
         this.userTradeInventoriesRepository = userTradeInventoriesRepository;
-        this.userFinancialRepository = userFinancialRepository;
+        this.userCoinsRepository = userCoinsRepository;
         this.hashService = hashService;
     }
 
@@ -45,8 +45,8 @@ public class UsersService {
                 UserTradeInventoryEntity.builder()
                         .user(savedUser)
                         .build());
-        userFinancialRepository.save(
-                UserFinancialEntity.builder()
+        userCoinsRepository.save(
+                UserCoinsEntity.builder()
                         .user(savedUser)
                         .build());
         return savedUser.getId();

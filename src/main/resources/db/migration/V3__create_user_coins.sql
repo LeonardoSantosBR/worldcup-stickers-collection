@@ -1,6 +1,5 @@
-CREATE TABLE user_financial (
+CREATE TABLE user_coins (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT NOT NULL UNIQUE REFERENCES users(id),
-    money NUMERIC(19, 2) NOT NULL DEFAULT 0,
     coins NUMERIC(19, 2) NOT NULL DEFAULT 0
 );

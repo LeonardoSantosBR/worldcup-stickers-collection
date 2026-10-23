@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.leonardo.worldcup_stickers.entity.StickerEntity;
 import com.leonardo.worldcup_stickers.entity.UserEntity;
+import com.leonardo.worldcup_stickers.entity.UserCoinsEntity;
 import com.leonardo.worldcup_stickers.entity.UserStickerEntity;
-import com.leonardo.worldcup_stickers.entity.userFInancial.UserFinancialEntity;
 import com.leonardo.worldcup_stickers.enums.RarityEnum;
 import com.leonardo.worldcup_stickers.exception.InsufficientCoinsException;
 import com.leonardo.worldcup_stickers.exception.UserNotFoundException;
 import com.leonardo.worldcup_stickers.repository.StickersRepository;
-import com.leonardo.worldcup_stickers.repository.UserFinancialRepository;
+import com.leonardo.worldcup_stickers.repository.UserCoinsRepository;
 import com.leonardo.worldcup_stickers.repository.UserStickersRepository;
 import com.leonardo.worldcup_stickers.repository.UsersRepository;
 
@@ -30,14 +30,14 @@ public class StickersService {
     private final StickersRepository stickersRepository;
     private final UserStickersRepository userStickersRepository;
     private final UsersRepository usersRepository;
-    private final UserFinancialRepository userFinancialRepository;
+    private final UserCoinsRepository userFinancialRepository;
     private final Random random = new Random();
 
     public StickersService(
             StickersRepository stickersRepository,
             UserStickersRepository userStickersRepository,
             UsersRepository usersRepository,
-            UserFinancialRepository userFinancialRepository) {
+            UserCoinsRepository userFinancialRepository) {
         this.stickersRepository = stickersRepository;
         this.userStickersRepository = userStickersRepository;
         this.usersRepository = usersRepository;
@@ -46,7 +46,7 @@ public class StickersService {
 
     @Transactional
     public List<StickerEntity> openPackage(Long userId) {
-        UserFinancialEntity financial = userFinancialRepository.findByUserId(userId)
+        UserCoinsEntity financial = userFinancialRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
         if (financial.getCoins().compareTo(PACKAGE_COST) < 0) {
             throw new InsufficientCoinsException();

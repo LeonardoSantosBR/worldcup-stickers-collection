@@ -1,8 +1,6 @@
-package com.leonardo.worldcup_stickers.entity.userFInancial;
+package com.leonardo.worldcup_stickers.entity;
 
 import java.math.BigDecimal;
-
-import com.leonardo.worldcup_stickers.entity.UserEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,13 +18,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "user_financial")
+@Table(name = "user_coins")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserFinancialEntity {
+public class UserCoinsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +33,6 @@ public class UserFinancialEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private UserEntity user;
-
-    @Column(nullable = false, precision = 19, scale = 2)
-    @Builder.Default
-    private BigDecimal money = BigDecimal.ZERO;
 
     @Column(nullable = false, precision = 19, scale = 2)
     @Builder.Default

@@ -13,22 +13,15 @@ import com.leonardo.worldcup_stickers.service.UserFinancialService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
-public class UserFinancialController {
+@RequestMapping("/users-coins")
+public class UserCoinsController {
     private final UserFinancialService userFinancialService;
 
-    public UserFinancialController(UserFinancialService userFinancialService) {
+    public UserCoinsController(UserFinancialService userFinancialService) {
         this.userFinancialService = userFinancialService;
     }
 
-    @PostMapping("/add-money")
-    public boolean addMoney(
-            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
-            @Valid @RequestBody AddMoneyDto body) {
-        return userFinancialService.addMoney(userId, body.amount());
-    }
-
-    @PostMapping("/add-coins")
+    @PostMapping()
     public boolean addCoins(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
             @Valid @RequestBody AddMoneyDto body) {

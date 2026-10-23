@@ -5,41 +5,28 @@ import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.leonardo.worldcup_stickers.entity.userFInancial.UserFinancialEntity;
-import com.leonardo.worldcup_stickers.exception.InsufficientBalanceException;
+import com.leonardo.worldcup_stickers.entity.UserCoinsEntity;
 import com.leonardo.worldcup_stickers.exception.UserNotFoundException;
-import com.leonardo.worldcup_stickers.repository.UserFinancialRepository;
+import com.leonardo.worldcup_stickers.repository.UserCoinsRepository;
 
 @Service
 public class UserFinancialService {
-    private final UserFinancialRepository userFinancialRepository;
+    private final UserCoinsRepository userCoinsRepository;
 
-    public UserFinancialService(UserFinancialRepository userFinancialRepository) {
-        this.userFinancialRepository = userFinancialRepository;
-    }
-
-    @Transactional
-    public boolean addMoney(Long userId, BigDecimal amount) {
-        UserFinancialEntity financial = findFinancial(userId);
-        financial.setMoney(financial.getMoney().add(amount));
-        userFinancialRepository.save(financial);
-        return true;
+    public UserFinancialService(UserCoinsRepository userCoinsRepository) {
+        this.userCoinsRepository = userCoinsRepository;
     }
 
     @Transactional
     public boolean addCoins(Long userId, BigDecimal amount) {
-        UserFinancialEntity financial = findFinancial(userId);
-        if (financial.getMoney().compareTo(amount) < 0) {
-            throw new InsufficientBalanceException();
-        }
-        financial.setMoney(financial.getMoney().subtract(amount));
+        UserCoinsEntity financial = findFinancial(userId);
         financial.setCoins(financial.getCoins().add(amount));
-        userFinancialRepository.save(financial);
+        userCoinsRepository.save(financial);
         return true;
     }
 
-    private UserFinancialEntity findFinancial(Long userId) {
-        return userFinancialRepository.findByUserId(userId)
+    private UserCoinsEntity findFinancial(Long userId) {
+        return userCoinsRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 }
