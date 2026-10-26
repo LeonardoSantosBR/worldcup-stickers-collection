@@ -10,9 +10,12 @@ import com.leonardo.worldcup_stickers.config.JwtAuthFilter;
 import com.leonardo.worldcup_stickers.dto.AddMoneyDto;
 import com.leonardo.worldcup_stickers.service.UserFinancialService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
+@Tag(name = "User coins", description = "Manage the authenticated user's coin balance")
 @RequestMapping("/users-coins")
 public class UserCoinsController {
     private final UserFinancialService userFinancialService;
@@ -22,6 +25,7 @@ public class UserCoinsController {
     }
 
     @PostMapping()
+    @Operation(summary = "Add coins", description = "Adds the requested positive amount of coins to the authenticated user's balance.")
     public boolean addCoins(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
             @Valid @RequestBody AddMoneyDto body) {

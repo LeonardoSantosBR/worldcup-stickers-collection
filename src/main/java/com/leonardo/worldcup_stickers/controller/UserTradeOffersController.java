@@ -20,9 +20,12 @@ import com.leonardo.worldcup_stickers.dto.tradeOffer.TradeOfferDto;
 import com.leonardo.worldcup_stickers.enums.TradeStatusEnum;
 import com.leonardo.worldcup_stickers.service.UserTradeOffersService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
+@Tag(name = "Trade offers", description = "Create, review, and respond to sticker trade offers")
 @RequestMapping("/user-trade-offers")
 public class UserTradeOffersController {
     private final UserTradeOffersService userTradeOffersService;
@@ -32,6 +35,7 @@ public class UserTradeOffersController {
     }
 
     @GetMapping("/inbox")
+    @Operation(summary = "List received offers", description = "Returns a paginated inbox of offers received by the authenticated user, optionally filtered by status.")
     public PageResponseDto<TradeOfferDetailDto> inbox(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
             @RequestParam(defaultValue = "1") int page,
@@ -41,6 +45,7 @@ public class UserTradeOffersController {
     }
 
     @GetMapping("/outbox")
+    @Operation(summary = "List sent offers", description = "Returns a paginated outbox of offers sent by the authenticated user, optionally filtered by status.")
     public PageResponseDto<TradeOfferDetailDto> outbox(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
             @RequestParam(defaultValue = "1") int page,
@@ -50,6 +55,7 @@ public class UserTradeOffersController {
     }
 
     @PostMapping("/make-offer")
+    @Operation(summary = "Create a trade offer", description = "Creates a pending offer to exchange the specified stickers with another user.")
     @ResponseStatus(HttpStatus.CREATED)
     public TradeOfferDto makeOffer(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
@@ -58,6 +64,7 @@ public class UserTradeOffersController {
     }
 
     @PostMapping("/{offerId}/accept")
+    @Operation(summary = "Accept a trade offer", description = "Accepts a received pending offer and transfers the offered and requested stickers.")
     public boolean acceptOffer(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
             @PathVariable Long offerId,
@@ -66,6 +73,7 @@ public class UserTradeOffersController {
     }
 
     @PostMapping("/{offerId}/reject")
+    @Operation(summary = "Reject a trade offer", description = "Rejects a received pending offer without transferring stickers.")
     public boolean rejectOffer(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
             @PathVariable Long offerId,
@@ -74,6 +82,7 @@ public class UserTradeOffersController {
     }
 
     @PostMapping("/{offerId}/cancel")
+    @Operation(summary = "Cancel a trade offer", description = "Cancels a pending offer created by the authenticated user.")
     public boolean cancelOffer(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
             @PathVariable Long offerId,

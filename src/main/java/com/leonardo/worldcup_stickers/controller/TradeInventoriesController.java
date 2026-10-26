@@ -16,9 +16,12 @@ import com.leonardo.worldcup_stickers.dto.TradeInventoryDto;
 import com.leonardo.worldcup_stickers.dto.availableTrade.AvailableTradeStickerDto;
 import com.leonardo.worldcup_stickers.service.UserTradeInventoriesService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
+@Tag(name = "Trade inventories", description = "Publish and browse stickers available for trade")
 @RequestMapping("/trade-inventories")
 public class TradeInventoriesController {
     private final UserTradeInventoriesService userTradeInventoriesService;
@@ -28,6 +31,7 @@ public class TradeInventoriesController {
     }
 
     @PostMapping("/make-available-trade")
+    @Operation(summary = "Publish stickers for trade", description = "Adds the specified owned stickers to the authenticated user's trade inventory.")
     public TradeInventoryDto makeAvailableTrade(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
             @Valid @RequestBody MakeAvailableTradeDto body) {
@@ -35,6 +39,7 @@ public class TradeInventoriesController {
     }
 
     @GetMapping("/available-trades")
+    @Operation(summary = "Browse available trades", description = "Returns a paginated listing of stickers offered by other users, optionally filtered by sticker name.")
     public PageResponseDto<AvailableTradeStickerDto> availableTrades(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int limit,
@@ -44,6 +49,7 @@ public class TradeInventoriesController {
     }
 
     @PatchMapping("/clear-available-trades")
+    @Operation(summary = "Clear my trade inventory", description = "Removes all stickers from the authenticated user's available-for-trade listing.")
     public TradeInventoryDto clearAvailableTrades(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId) {
         return userTradeInventoriesService.clearAvailableTrades(userId);

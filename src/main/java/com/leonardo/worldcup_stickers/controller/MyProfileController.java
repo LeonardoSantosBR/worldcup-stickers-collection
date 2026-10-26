@@ -12,7 +12,11 @@ import com.leonardo.worldcup_stickers.dto.MyStickerDto;
 import com.leonardo.worldcup_stickers.dto.PageResponseDto;
 import com.leonardo.worldcup_stickers.service.MyProfileService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
+@Tag(name = "My profile", description = "View the authenticated user's profile and sticker collection")
 @RequestMapping("/my-profile")
 public class MyProfileController {
     private final MyProfileService myProfileService;
@@ -22,11 +26,13 @@ public class MyProfileController {
     }
 
     @GetMapping("")
+    @Operation(summary = "Get my profile", description = "Returns the authenticated user's profile and album completion percentage.")
     public MyProfileDto myStickers(@RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId) {
         return this.myProfileService.findMyUser(userId);
     }
 
     @GetMapping("/my-stickers")
+    @Operation(summary = "List my stickers", description = "Returns a paginated list of stickers owned by the authenticated user.")
     public PageResponseDto<MyStickerDto> myStickers(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
             @RequestParam(defaultValue = "1") int page,
@@ -35,6 +41,7 @@ public class MyProfileController {
     }
 
     @GetMapping("/my-stickers-available-trade")
+    @Operation(summary = "List my tradeable stickers", description = "Returns the authenticated user's stickers currently listed as available for trade.")
     public PageResponseDto<MyStickerDto> myStickersAvailableTrade(
             @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
             @RequestParam(defaultValue = "1") int page,
