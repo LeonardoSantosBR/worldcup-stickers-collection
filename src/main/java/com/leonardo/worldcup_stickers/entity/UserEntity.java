@@ -32,6 +32,9 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "avatar_url", length = 255)
+    private String avatarUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default

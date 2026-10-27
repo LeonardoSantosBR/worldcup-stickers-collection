@@ -52,6 +52,12 @@ public class S3Service {
         return key;
     }
 
+    public String getObjectUrl(String key) {
+        return s3Client.utilities()
+                .getUrl(builder -> builder.bucket(bucketName).key(key))
+                .toString();
+    }
+
     public String createPresignedGetUrl(String key, Duration expiration) {
         try (S3Presigner presigner = S3Presigner.create()) {
             PresignedGetObjectRequest presignedRequest = presigner.presignGetObject(
