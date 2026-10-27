@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.leonardo.worldcup_stickers.config.JwtAuthFilter;
+import com.leonardo.worldcup_stickers.config.JwtAuthFilterConfig;
 import com.leonardo.worldcup_stickers.dto.StickerDto;
 import com.leonardo.worldcup_stickers.service.StickersService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,7 +25,7 @@ public class StickersController {
 
     @PostMapping("/open-package")
     @Operation(summary = "Open a sticker pack", description = "Draws seven random stickers and adds them to the authenticated user's collection.")
-    public List<StickerDto> openPackage(@RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId) {
+    public List<StickerDto> openPackage(@RequestAttribute(JwtAuthFilterConfig.USER_ID_ATTRIBUTE) Long userId) {
         return stickersService.openPackage(userId).stream().map(StickerDto::fromEntity).toList();
     }
 }

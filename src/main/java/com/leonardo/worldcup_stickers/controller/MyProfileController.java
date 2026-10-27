@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.leonardo.worldcup_stickers.config.JwtAuthFilter;
+import com.leonardo.worldcup_stickers.config.JwtAuthFilterConfig;
 import com.leonardo.worldcup_stickers.dto.MyProfileDto;
 import com.leonardo.worldcup_stickers.dto.MyStickerDto;
 import com.leonardo.worldcup_stickers.dto.PageResponseDto;
@@ -27,14 +27,14 @@ public class MyProfileController {
 
     @GetMapping("")
     @Operation(summary = "Get my profile", description = "Returns the authenticated user's profile and album completion percentage.")
-    public MyProfileDto myStickers(@RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId) {
+    public MyProfileDto myStickers(@RequestAttribute(JwtAuthFilterConfig.USER_ID_ATTRIBUTE) Long userId) {
         return this.myProfileService.findMyUser(userId);
     }
 
     @GetMapping("/my-stickers")
     @Operation(summary = "List my stickers", description = "Returns a paginated list of stickers owned by the authenticated user.")
     public PageResponseDto<MyStickerDto> myStickers(
-            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
+            @RequestAttribute(JwtAuthFilterConfig.USER_ID_ATTRIBUTE) Long userId,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int limit) {
         return this.myProfileService.findMyStickers(userId, page, limit);
@@ -43,7 +43,7 @@ public class MyProfileController {
     @GetMapping("/my-stickers-available-trade")
     @Operation(summary = "List my tradeable stickers", description = "Returns the authenticated user's stickers currently listed as available for trade.")
     public PageResponseDto<MyStickerDto> myStickersAvailableTrade(
-            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
+            @RequestAttribute(JwtAuthFilterConfig.USER_ID_ATTRIBUTE) Long userId,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int limit) {
         return this.myProfileService.findMyStickersAvailableTrade(userId, page, limit);

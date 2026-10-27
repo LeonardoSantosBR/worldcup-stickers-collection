@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.leonardo.worldcup_stickers.config.JwtAuthFilter;
+import com.leonardo.worldcup_stickers.config.JwtAuthFilterConfig;
 import com.leonardo.worldcup_stickers.dto.MakeOfferDto;
 import com.leonardo.worldcup_stickers.dto.PageResponseDto;
 import com.leonardo.worldcup_stickers.dto.RespondOfferDto;
@@ -37,7 +37,7 @@ public class UserTradeOffersController {
     @GetMapping("/inbox")
     @Operation(summary = "List received offers", description = "Returns a paginated inbox of offers received by the authenticated user, optionally filtered by status.")
     public PageResponseDto<TradeOfferDetailDto> inbox(
-            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
+            @RequestAttribute(JwtAuthFilterConfig.USER_ID_ATTRIBUTE) Long userId,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int limit,
             @RequestParam(required = false) TradeStatusEnum status) {
@@ -47,7 +47,7 @@ public class UserTradeOffersController {
     @GetMapping("/outbox")
     @Operation(summary = "List sent offers", description = "Returns a paginated outbox of offers sent by the authenticated user, optionally filtered by status.")
     public PageResponseDto<TradeOfferDetailDto> outbox(
-            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
+            @RequestAttribute(JwtAuthFilterConfig.USER_ID_ATTRIBUTE) Long userId,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int limit,
             @RequestParam(required = false) TradeStatusEnum status) {
@@ -58,7 +58,7 @@ public class UserTradeOffersController {
     @Operation(summary = "Create a trade offer", description = "Creates a pending offer to exchange the specified stickers with another user.")
     @ResponseStatus(HttpStatus.CREATED)
     public TradeOfferDto makeOffer(
-            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
+            @RequestAttribute(JwtAuthFilterConfig.USER_ID_ATTRIBUTE) Long userId,
             @Valid @RequestBody MakeOfferDto body) {
         return userTradeOffersService.makeOffer(userId, body);
     }
@@ -66,7 +66,7 @@ public class UserTradeOffersController {
     @PostMapping("/{offerId}/accept")
     @Operation(summary = "Accept a trade offer", description = "Accepts a received pending offer and transfers the offered and requested stickers.")
     public boolean acceptOffer(
-            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
+            @RequestAttribute(JwtAuthFilterConfig.USER_ID_ATTRIBUTE) Long userId,
             @PathVariable Long offerId,
             @Valid @RequestBody(required = false) RespondOfferDto body) {
         return userTradeOffersService.acceptOffer(userId, offerId, noteOf(body));
@@ -75,7 +75,7 @@ public class UserTradeOffersController {
     @PostMapping("/{offerId}/reject")
     @Operation(summary = "Reject a trade offer", description = "Rejects a received pending offer without transferring stickers.")
     public boolean rejectOffer(
-            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
+            @RequestAttribute(JwtAuthFilterConfig.USER_ID_ATTRIBUTE) Long userId,
             @PathVariable Long offerId,
             @Valid @RequestBody(required = false) RespondOfferDto body) {
         return userTradeOffersService.rejectOffer(userId, offerId, noteOf(body));
@@ -84,7 +84,7 @@ public class UserTradeOffersController {
     @PostMapping("/{offerId}/cancel")
     @Operation(summary = "Cancel a trade offer", description = "Cancels a pending offer created by the authenticated user.")
     public boolean cancelOffer(
-            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
+            @RequestAttribute(JwtAuthFilterConfig.USER_ID_ATTRIBUTE) Long userId,
             @PathVariable Long offerId,
             @Valid @RequestBody(required = false) RespondOfferDto body) {
         return userTradeOffersService.cancelOffer(userId, offerId, noteOf(body));

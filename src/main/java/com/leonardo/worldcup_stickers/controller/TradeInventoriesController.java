@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.leonardo.worldcup_stickers.config.JwtAuthFilter;
+import com.leonardo.worldcup_stickers.config.JwtAuthFilterConfig;
 import com.leonardo.worldcup_stickers.dto.MakeAvailableTradeDto;
 import com.leonardo.worldcup_stickers.dto.PageResponseDto;
 import com.leonardo.worldcup_stickers.dto.TradeInventoryDto;
@@ -33,7 +33,7 @@ public class TradeInventoriesController {
     @PostMapping("/make-available-trade")
     @Operation(summary = "Publish stickers for trade", description = "Adds the specified owned stickers to the authenticated user's trade inventory.")
     public TradeInventoryDto makeAvailableTrade(
-            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId,
+            @RequestAttribute(JwtAuthFilterConfig.USER_ID_ATTRIBUTE) Long userId,
             @Valid @RequestBody MakeAvailableTradeDto body) {
         return userTradeInventoriesService.makeAvailableTrade(userId, body.stickerIds());
     }
@@ -44,14 +44,14 @@ public class TradeInventoriesController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int limit,
             @RequestParam(required = false) String name,
-            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId) {
+            @RequestAttribute(JwtAuthFilterConfig.USER_ID_ATTRIBUTE) Long userId) {
         return userTradeInventoriesService.findAllAvailableForTrade(userId, page, limit, name);
     }
 
     @PatchMapping("/clear-available-trades")
     @Operation(summary = "Clear my trade inventory", description = "Removes all stickers from the authenticated user's available-for-trade listing.")
     public TradeInventoryDto clearAvailableTrades(
-            @RequestAttribute(JwtAuthFilter.USER_ID_ATTRIBUTE) Long userId) {
+            @RequestAttribute(JwtAuthFilterConfig.USER_ID_ATTRIBUTE) Long userId) {
         return userTradeInventoriesService.clearAvailableTrades(userId);
     }
 }

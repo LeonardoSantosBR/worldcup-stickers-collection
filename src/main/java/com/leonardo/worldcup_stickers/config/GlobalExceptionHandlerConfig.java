@@ -13,10 +13,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import com.leonardo.worldcup_stickers.dto.ErrorResponseDto;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandlerConfig {
 
-    @ExceptionHandler(ApiException.class)
-    public ResponseEntity<ErrorResponseDto> handleApiException(ApiException ex) {
+    @ExceptionHandler(ApiExceptionConfig.class)
+    public ResponseEntity<ErrorResponseDto> handleApiException(ApiExceptionConfig ex) {
         ErrorResponseDto body = ErrorResponseDto.of(
                 ex.getStatus().value(), ex.getStatus().getReasonPhrase(), ex.getMessage());
         return ResponseEntity.status(ex.getStatus()).body(body);
@@ -33,8 +33,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDto> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> fieldErrors = new LinkedHashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error ->
-                fieldErrors.putIfAbsent(error.getField(), error.getDefaultMessage()));
+        ex.getBindingResult().getFieldErrors()
+                .forEach(error -> fieldErrors.putIfAbsent(error.getField(), error.getDefaultMessage()));
 
         ErrorResponseDto body = new ErrorResponseDto(
                 java.time.Instant.now(),

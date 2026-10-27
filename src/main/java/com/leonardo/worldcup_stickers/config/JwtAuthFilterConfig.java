@@ -21,19 +21,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class JwtAuthFilter extends OncePerRequestFilter {
-
+public class JwtAuthFilterConfig extends OncePerRequestFilter {
     public static final String USER_ID_ATTRIBUTE = "user_id";
-
     private static final List<String> PUBLIC_PATHS = List.of(
             "POST /auth/signin",
             "POST /users");
-
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
     private final JwtService jwtService;
     private final ObjectMapper objectMapper;
 
-    public JwtAuthFilter(JwtService jwtService, ObjectMapper objectMapper) {
+    public JwtAuthFilterConfig(JwtService jwtService, ObjectMapper objectMapper) {
         this.jwtService = jwtService;
         this.objectMapper = objectMapper;
     }
